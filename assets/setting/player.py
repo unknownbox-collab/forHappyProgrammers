@@ -7,6 +7,7 @@ class Player:
         self.heal = 0
         self.heart = 0
         self.ap = 0
+        self.act = 3
 
         self.buffEffect = {}
         self.inventory = []
@@ -15,3 +16,6 @@ class Player:
     def setting(self, character):
         self.character = character
         self.hp = character
+    
+    def show(self):
+        self.character.show()

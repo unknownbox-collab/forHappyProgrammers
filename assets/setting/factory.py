@@ -1,19 +1,38 @@
-from assets.gui.scenes import *
 from assets.setting.items import *
+from assets.setting.player import *
 from assets.setting.parameter import *
+from assets.setting.character import *
+from assets.gui.buttons import *
 from abc import *
+
+from assets.setting.player import Player
         
 class Factory(metaclass=ABCMeta):
     @abstractclassmethod
     def create(name):
         pass
 
-class SceneFactory(Factory):
+class PlayerFactory(Factory):
+    def create(self):
+        return Player()
+
+class ButtonFactory(Factory):
     def create(self, name):
-        if name == START_SCENE:
-            return StartScene()
-        elif name == ITEM_TEST_SCENE:
-            return ItemTestScene()
+        if name == START_BUTTON:
+            return StartButton()
+        elif name == SHOP_BUTTON:
+            return ShopButton()
+        elif name == DOTORI_CHOOSE_BUTTON:
+            return DotoriChooseButton()
+        elif name == GAMTORI_CHOOSE_BUTTON:
+            return GamtoriChooseButton()
+
+class CharacterFactory(Factory):
+    def create(self, name):
+        if name == DOTORI:
+            return Dotori()
+        elif name == GAMTORI:
+            return Gamtori()
 
 class ItemFactory(Factory):
     def create(self, name):

@@ -1,6 +1,5 @@
 import pygame,os
 from assets.setting.parameter import *
-from assets.setting.back import playerList
 
 class Item:
     def __init__(self) -> None:
@@ -15,7 +14,7 @@ class Item:
         self.owner = None
     
     def setting(self, img, name, description, cost, buff = {}, size = (0,0)):
-        img = pygame.image.load(os.path.join('.','assets','items',img))
+        img = pygame.image.load(os.path.join('.','assets','image','items',img))
         self.name = name
         self.description = description
         self.cost = 0
@@ -26,20 +25,20 @@ class Item:
         self.cost = cost
         self.buff = buff
     
-    def ablility(self):
+    def ablility(self, playerObject):
         pass
 
     def buy(self, player):
         self.owner = player
-        playerList[player].money -= self.cost
-        playerList[player].inventory.append(self)
+        return [('CH','money',-self.cost),('ADD_INV',self)]
     
     def setLocation(self, x = 0, y = 0):
         self.x = x
         self.y = y
 
     def show(self,screen):
-        screen.blit()
+        img = self.img.get_rect(center = (self.x,self.y))
+        screen.blit(self.skin, img)
 
 # 감기약
 class ColdMedicineItem(Item):
@@ -124,12 +123,12 @@ class CheonJePencilItem(Item):
 구매한 시점 기준으로 {체력}이 100감소할 때마다 {공격력} + 20 (최대 200 증가)'''
         super().setting("천재 연필.png", "천재 연필", description, 250, {ATK : 20})
     
-    def buy(self, player):
-        self.initHP = playerList[player].hp
+    def buy(self, player, playerObject):
+        self.initHP = playerObject.hp
         super().buy(player)
     
-    def ablility(self):
-        stat = (self.initHP - playerList[self.owner].hp) // 100
+    def ablility(self, playerObject):
+        stat = (self.initHP - playerObject.hp) // 100
         if 0 <= stat <= 10:
             self.buff[ATK] = 20 + stat * 20
 
